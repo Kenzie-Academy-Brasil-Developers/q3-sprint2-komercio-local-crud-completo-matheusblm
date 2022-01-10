@@ -57,12 +57,18 @@ def create():
     produtos.append(new_item)
     return jsonify(new_item), 201
 
+
+
 @app.route('/products/<int:product_id>', methods=['PUT', 'PATCH'])
 def update(product_id: int):
     data = request.get_json()
-    produtos[product_id - 1]['name'] = data['name']
-    produtos[product_id - 1]['price'] = data['price']
+    produto = [produto for produto in produtos if produto['id'] == product_id][0]
+    if data.get('name'):
+        produto['name'] = data['name']
+    if data.get('price'):
+        produto['price'] = data['price']
     return "", 204
+
 
 @app.delete("/products/<product_id>")
 def delete(product_id: int):
